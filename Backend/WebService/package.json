@@ -6,6 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Brayan Hernández Cortés, Oscar Elí Melchor Hernández",
   "license": "ISC"
 }
