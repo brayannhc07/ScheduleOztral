@@ -1,0 +1,11 @@
+{
+  "name": "webservice",
+  "version": "1.0.0",
+  "description": "Este es el web service en Node del sistema.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
