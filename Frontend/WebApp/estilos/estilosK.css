@@ -1,0 +1,542 @@
+*{
+    font-family: 'Lobster', cursive;
+    padding: 0;
+    margin: 0;
+}
+body{
+    background-color: #eaeaea;
+}
+body h1{
+    background-color: #222831;
+    color: white;
+    padding-left: 20px;
+    line-height: 3;
+    transition: all .4s;
+}
+/*DARKMODE*/
+.darkmode{
+    color: white;
+    position: absolute;
+    font-size: 30px;
+    top: 7px;
+    right: 7px;
+    transition: all .4s;
+    opacity: 1;
+}
+.darkmode:hover{
+    transform: scale(1.3);
+}
+.darkmode.dark{
+    opacity: 0;
+    visibility: hidden;
+    transform: rotate(180deg);
+}
+/*DARKMODE CONFIGURATION*/
+body h1.dark{
+    background-color: #222831;
+    color: #00adb5;
+    padding-left: 20px;   
+}
+
+.area_class.dark{
+    background-color: #222831;
+}
+.area_class-button.dark{
+    color: #00adb5; 
+}
+.area_class-button-com.dark{
+    color: #00adb5;
+}
+body.dark{
+    background-color: #364f6b;
+}
+.title.dark{
+    color: #00adb5;
+}
+.area_class-card-grid.dark{
+    color: #000000;
+    background-color: #71c9ce;
+}
+.area_class-card-grid.dark > a{
+    color: #000000;
+}
+.area_class-card-grid.dark > a:hover{
+    color: #000000;
+}
+.area_class-card-grid.dark > h2{
+    color: #000000;
+}
+/*WORKSPACE*/
+.area{
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    flex-wrap: wrap;
+    padding-top: 20px;
+}
+/*CLASES*/
+.area_class{
+    background-color: #00adb5;
+    width: 400px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: transform .4s;
+}
+.area_class-button{
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    color: #393e46;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transition: all .4s;
+}
+.area_class-button-com{
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    color: #393e46;
+    position: absolute;
+    top: 7px;
+    right: 0px;
+    transition: all .4s;
+}
+.area_class-button:hover{
+    transform: scale(1.2);
+}
+.area_class-button-com:hover{
+    transform: scale(1.2);
+}
+.area_class-title{
+    margin-top: 10px;
+    font-size: 40px;
+    text-decoration: none;
+    color: #252a34; 
+    transition: all .4s;
+}
+.area_class-title a:hover{
+    color: #252a34; 
+}
+.area_class-title:hover{
+    transform: scale(1.3);
+}
+.area_class-card{
+    display: grid;
+    grid-template-rows: 100px 100px;
+    grid-template-columns: 150px 150px;
+    margin-bottom: 20px;
+}
+.area_class-card-grid{
+    padding: 10px;
+    margin: 5px;
+    border: 2px solid #252a34;
+    border-radius: 10px;
+    background-color:#eaeaea ;
+    text-align: center;
+    transition: all .4s;
+}
+.area_class-card-grid:hover{
+    transform: scale(1.1);
+}
+.area_class-card-grid h2{
+    color: #252a34;
+}
+.area_class-card-grid a{
+    text-decoration: none;
+    color: #111;
+    transition: color .4s;
+}
+.area_class-card-grid a:hover{
+    color: #00adb5;
+}
+/*TARJETA DE DATOS DE CLASE*/
+.area_classdata{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background-color: #fff;
+    color: #555;
+    border: 2px solid black;
+    width: 500px;
+    height: 550px;
+    align-items: center;
+    justify-content: space-around;
+}
+.area_classdata h2{
+    font-size: 25px;
+}
+.area_classdata p{
+    margin: 15px;
+    font-size: 25px;
+}
+.btn-copi{
+    font-size: 35px;
+    color: #111;
+    background-color: transparent;
+    border: none;
+    transition: transform .4s;
+    margin-bottom: 10px;
+}
+.btn-copi:hover{
+    transform: scale(1.3);
+}
+/*COPIADO DE ELEMENTOS*/
+.copiedElement{
+    visibility: hidden;
+    display: none;
+}
+.copiedMail{
+    visibility: hidden;
+}
+
+/*POPUPS*/
+.overlay{
+    background-color: rgba(0,0,0,.3);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity .4s;
+}
+/*RECORDATORIOS*/
+.input_comment{
+    position: absolute;
+    height: 296px;
+    border: none;
+    border-left: 2px solid black;
+    border-right: 2px solid #666;
+    border-top: 2px solid #666;
+    border-bottom: 2px solid #666;
+    border-radius: 0 10px 10px 0;
+    top: 0;
+    right: -160px;
+    text-align: center;
+
+    opacity: 0;
+    transition: all .4s;
+    display: none;
+}
+.button-close-comment{
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    color: #252a24;
+    position: absolute;
+    top: 5px;
+    right: -170px;
+
+    opacity: 0;
+    transition: all .4s;
+    display: none;
+}
+/*POPUPS ACTIVE*/
+.overlay.active{
+    opacity: 1;
+    visibility: visible;
+}
+/*RECORDATORIOS ACTIVE*/
+.input_comment.active{
+    display: block;
+    opacity: 1;
+}
+.input_comment.active:focus{
+    outline: none;
+}
+.button-close-comment.active{
+    display: block;
+    opacity: 1;
+}
+.area_class.active{
+    transform: translateX(-35%);
+}
+/*FORMULARIO*/
+.plus{
+    color: white;
+    position: absolute;
+    font-size: 30px;
+    top: 7px;
+    right: 50px;
+    transition: all .4s;
+} 
+.plus:hover{
+    transform: scale(1.3);
+}
+.formulario{
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    background-color: white;
+    border-radius: 20px;
+    position: relative;
+}
+.formulario h1{
+    padding: 0;
+    text-align: center;
+    border-radius: 20px 20px 0 0;
+    line-height: 2;
+}
+.formulario_item{
+    margin: 5px;
+    position: relative;
+}
+.formulario_item label{
+    display: block;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+.formulario_item input{
+    display: block;
+    box-sizing: border-box;
+    padding-left: 10px;
+    border: none;
+    border-bottom: 1px solid black;
+    height: 25px;
+    width: 100%;
+}
+.formulario_item input:focus{
+    outline: none;
+}
+.formulario .area_class-button{
+    color: white;
+    top: 13px;
+    left: 10px;
+}
+.formulario :nth-child(9){
+    margin-bottom: 30px;
+}
+.formulario button{
+    background-color: #06d4d6;
+    border: 1px solid #333;
+    border-radius: 5px;
+    height: 30px;
+    width: 60px;
+    align-self: center;
+    margin-bottom: 20px;
+}
+.formulario button:focus{
+    outline: none;
+}
+/*DATOS PERSONALES*/
+.profile{
+    color: white;
+    position: absolute;
+    font-size: 30px;
+    top: 7px;
+    right: 90px;
+    transition: all .4s;
+} 
+.profile:hover{
+    transform: scale(1.3);
+}
+/*ELIMINAR CLASE*/
+.garbage{
+    color: white;
+    position: absolute;
+    font-size: 30px;
+    top: 7px;
+    right: 145px;
+    transition: all .4s;
+} 
+.garbage:hover{
+    transform: scale(1.3);
+}
+.eraseform{
+    display: block;
+    font-size: 30px;
+    padding: 5px;
+    transition: all .4s;
+    position: relative;
+}
+.eraseform:hover{
+    transform: translateX(70px) scale(1.3);
+}
+.formulario.erase :nth-child(8){
+    margin-bottom: 0px;
+}
+.eraseform.trash > .trashS{
+    visibility: visible;
+    opacity: 1;
+}
+.trashS{
+    visibility: hidden;
+    opacity: 0;
+
+    position: absolute;
+    right: 10px;
+    color: red;
+    transition: all .4s;
+}
+.eraseform:hover > .trashS{
+    transform: translatex(-105px);
+}
+/*EDITAR CLASE*/
+.editI{
+    color: white;
+    position: absolute;
+    font-size: 30px;
+    top: 7px;
+    right: 185px;
+    transition: all .4s;
+} 
+.editI:hover{
+    transform: scale(1.3);
+}
+.editform{
+    display: block;
+    font-size: 30px;
+    padding: 5px;
+    transition: all .4s;
+    position: relative;
+}
+.editform:hover{
+    transform: translateX(70px) scale(1.3);
+}
+.editS{
+    visibility: hidden;
+    opacity: 0;
+
+    position: absolute;
+    right: 10px;
+    color: #2a9aff;
+    transition: all .4s;
+}
+.editform.edit > .editS{
+    visibility: visible;
+    opacity: 1;
+}
+.editform:hover > .editS{
+    transform: translatex(-105px);
+}
+@media only screen and (max-width: 550px){
+    .darkmode{
+        top: 101px;
+    }
+    .plus{
+        top: 101px;
+    }
+    .profile{
+        top: 101px;
+    }
+    .garbage{
+        top: 101px;
+    }
+    .editI{
+        top: 101px;
+    }
+    .menu{
+        height: 50px;
+        background-color: #00adb5;
+    }
+    .area_class{
+        width: 290px;
+        height: 450px;
+    }
+    .area_class-title{
+        font-size: 30px;
+    }
+    .area_class-card{
+        display: grid;
+        grid-template-rows: repeat(4, 90px);
+        grid-template-columns: 200px;
+        margin-bottom: 20px;
+    }
+    .input_comment{
+        position: absolute;
+        height: 450px;
+        border: none;
+        border-left: 2px solid black;
+        border-right: 2px solid #666;
+        border-top: 2px solid #666;
+        border-bottom: 2px solid #666;
+        border-radius: 0 10px 10px 0;
+        top: 0;
+        right: -150px;
+        text-align: center;
+    
+        opacity: 0;
+        transition: all .4s;
+        display: none;
+    }
+    .button-close-comment{
+        font-size: 30px;
+        width: 40px;
+        height: 40px;
+        color: #252a24;
+        position: absolute;
+        top: 5px;
+        right: -160px;
+    
+        opacity: 0;
+        transition: all .4s;
+        display: none;
+    }
+    .area_class.active{
+        transform: translateX(-50%);
+    }
+    .area_classdata{/*
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        background-color: #fff;
+        color: #555;
+        border: 2px solid black; */
+        width: 300px;
+        height: 550px;
+        align-items: center;
+        justify-content: space-around;
+    }
+    .area_classdata h2{
+        font-size: 20px;
+    }
+    .area_classdata p{
+        margin: 5px;
+        font-size: 20px;
+    }
+    .formulario{
+        width: 350px;
+        position: sticky;
+    }
+    .form_class{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: 500px;
+        width: 350px;
+        background-color: white;
+        border-radius: 20px;
+        position: relative;
+    }
+    .form_class h1{
+        width: 100%;
+        padding: 0;
+        text-align: center;
+        border-radius: 20px 20px 0 0;
+        line-height: 2;
+    }
+    .form_class .formulario_item{
+        width: 160px;
+        margin: 5px;
+        position: relative;
+    }
+    .formulario .area_class-button{
+        color: white;
+        top: -35px;
+        left: 10px;
+    }
+}
+/*Depurar código de CSS
+Botón de Eliminado de Clases y de Edición*/

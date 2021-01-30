@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horario Oztral</title>
+    <script src="https://kit.fontawesome.com/d2e94dcd74.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="estilos/estilosK.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet"> 
+    <link rel="icon" href="iconos/logo.ico">
+</head>
+<body class="background" id="background">
+    <h1 id="title"></h1>
+    <a href="#" class="darkmode dark" id="btn-darkmode-m"><i class="fas fa-moon"></i></a>
+    <a href="#" class="darkmode" id="btn-darkmode-s"><i class="fas fa-sun"></i></a>
+    <a href="#" id="btn-add" class="plus"><i class="fas fa-plus"></i></a>
+    <a href="#" id="btn-profile" class="profile"><i class="fas fa-user-cog"></i></a>
+    <a href="#" id="btn-garbage" class="garbage"><i class="fas fa-trash-alt"></i></a>
+    <a href="#" id="btn-edit" class="editI"><i class="fas fa-edit"></i></a>
+
+    <div class="menu"></div>
+    <div class="area" id="area">
+       
+    </div>
+    <div class="form">
+        <div class="overlay" id="overlay_input">
+            <div class="formulario form_class">
+                <a href="#" id="btn-cerrar-form" class="area_class-button"><i class="fas fa-times"></i></a>
+                <h1>Ingrese datos de Materia</h1>
+                <div class="formulario_item">
+                    <label for="input-topic">Materia</label>
+                    <input type="text" id="input-topic" placeholder="Ingrese una materia">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-topiclnk">Classroom</label>
+                    <input type="text" id="input-topiclnk" placeholder="Ingrese el link a Classroom">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-time">Horario</label>
+                    <input type="text" id="input-time" placeholder="X:00 - X:00">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-days">Días</label>
+                    <input type="text" id="input-days" placeholder="Ingrese los días de clase">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-teacher">Maestro</label>
+                    <input type="text" id="input-teacher" placeholder="Ingrese el nombre del Maestro">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-teacher-mail">Correo Maestro</label>
+                    <input type="email" id="input-teacher-mail" placeholder="Ingrese el correo del Maestro">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-zoom">Link a Zoom</label>
+                    <input type="text" id="input-zoom" placeholder="Ingrese una liga de Zoom">
+                </div>
+                <button id="addButton">Agregar</button>
+            </div>
+        </div>
+    </div>
+    <div class="personal-data">
+        <div class="overlay" id="overlay_profile">
+            <div class="formulario">
+                <a href="#" id="btn-close-prof" class="area_class-button"><i class="fas fa-times"></i></a>
+                <h1>Ingrese sus Datos</h1>
+                <div class="formulario_item">
+                    <label for="input-name">Nombres</label>
+                    <input type="text" id="input-name" placeholder="Oscar">
+                </div><div class="formulario_item">
+                    <label for="input-lastname">Apellidos</label>
+                    <input type="text" id="input-lastname" placeholder="Melchor">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-group">Grupo</label>
+                    <input type="text" id="input-group" placeholder="32">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-school">Escuela</label>
+                    <input type="text" id="input-school" placeholder="Universidad Autónoma de Querétaro">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-number">Expediente</label>
+                    <input type="email" id="input-number" placeholder="29XXXX">
+                </div>
+                <button id="updateProf">Agregar</button>
+            </div>
+        </div>
+    </div>
+    <div class="erase-data">
+        <div class="overlay" id="overlay-erase">
+            <div class="formulario erase">
+                <a href="#" id="btn-close-rem" class="area_class-button"s><i class="fas fa-times"></i></a>
+                <h1>Seleccione para Eliminar</h1>
+                <div id="erase-card">
+
+                </div>
+                <button id="remBtn">Eliminar</button>
+            </div>
+        </div>
+    </div>
+    <div class="edit-data">
+        <div class="overlay" id="overlay-edit">
+            <div class="formulario">
+                <a href="#" id="btn-close-edit" class="area_class-button"><i class="fas fa-times"></i></a>
+                <h1>Seleccione para Editar</h1>
+                <div id="edit-card">
+
+                </div>
+                <button id="editPPBtn">Editar</button>
+            </div>
+        </div>
+    </div>
+    <div class="edit-setting">
+        <div class="overlay" id="overlay-editSetting">
+            <div class="formulario form_class">
+                <a href="#" id="btn-close-edit-op" class="area_class-button"><i class="fas fa-times"></i></a>
+                <h1>Ingrese datos de Materia</h1>
+                <div class="formulario_item">
+                    <label for="input-edtopic">Materia</label>
+                    <input type="text" id="input-edtopic" placeholder="Ingrese una materia">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-edtopiclnk">Classroom</label>
+                    <input type="text" id="input-edtopiclnk" placeholder="Ingrese el link a Classroom">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-edtime">Horario</label>
+                    <input type="text" id="input-edtime" placeholder="X:00 - X:00">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-eddays">Días</label>
+                    <input type="text" id="input-eddays" placeholder="Ingrese los días de clase">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-edteacher">Maestro</label>
+                    <input type="text" id="input-edteacher" placeholder="Ingrese el nombre del Maestro">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-edteacher-mail">Correo Maestro</label>
+                    <input type="email" id="input-edteacher-mail" placeholder="Ingrese el correo del Maestro">
+                </div>
+                <div class="formulario_item">
+                    <label for="input-edzoom">Link a Zoom</label>
+                    <input type="text" id="input-edzoom" placeholder="Ingrese una liga de Zoom">
+                </div>
+                <button id="editBtn">Editar</button>
+            </div>
+        </div>
+    </div>
+    <!--button onclick="clearjjj()">John</button-->
+    <script>
+        function clearjjj(){
+            localStorage.clear();
+        }
+    </script>
+    <script src="functions.js"></script> 
+    <script>
+        function addCard(){
+            useInfo();
+        }
+    </script>
+</body>
+</html>
