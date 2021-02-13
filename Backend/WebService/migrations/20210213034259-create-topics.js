@@ -38,7 +38,7 @@ module.exports = {
       color: {
         type: Sequelize.STRING(12),
         allowNull: false,
-        defaultValue: ''
+        defaultValue: '#fff'
       },
       createdAt: {
         allowNull: false,

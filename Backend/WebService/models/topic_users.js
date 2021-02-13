@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      topics.belongsTo(models.users, {
+      topic_users.belongsTo(models.users, {
         as: 'users',
         foreignKey: 'id_user'
       });
-      topics.belongsTo(models.topics, {
+      topic_users.belongsTo(models.topics, {
         as: 'topics',
         foreignKey: 'id_topic'
       });
@@ -30,11 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     id_topic: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'topics',
-        key: 'id'
-      }
+      allowNull: false
     },
     id_user: {
       type: DataTypes.INTEGER,
