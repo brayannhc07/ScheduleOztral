@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       id_topic: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'topics',
@@ -17,7 +17,7 @@ module.exports = {
         }
       },
       id_link: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'topic_links',
@@ -25,15 +25,15 @@ module.exports = {
         }
       },
       day: {
-        type: DataTypes.SMALLINT,
+        type: Sequelize.SMALLINT,
         allowNull: false
       },
       start: {
-        type: DataTypes.TIME,
+        type: Sequelize.TIME,
         allowNull: false
       },
       end: {
-        type: DataTypes.TIME,
+        type: Sequelize.TIME,
         allowNull: false
       },
       createdAt: {

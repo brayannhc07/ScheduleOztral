@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       id_user: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'users',
@@ -17,26 +17,26 @@ module.exports = {
         }
       },
       name: {
-        type: DataTypes.STRING(45),
+        type: Sequelize.STRING(45),
         allowNull: false
       },
       teacher: {
-        type: DataTypes.STRING(45),
+        type: Sequelize.STRING(45),
         allowNull: false,
         defaultValue: ''
       },
       email: {
-        type: DataTypes.STRING(45),
+        type: Sequelize.STRING(45),
         allowNull: false,
         defaultValue: ''
       },
       phone: {
-        type: DataTypes.STRING(20),
+        type: Sequelize.STRING(20),
         allowNull: false,
         defaultValue: ''
       },
       color: {
-        type: DataTypes.STRING(12),
+        type: Sequelize.STRING(12),
         allowNull: false,
         defaultValue: ''
       },

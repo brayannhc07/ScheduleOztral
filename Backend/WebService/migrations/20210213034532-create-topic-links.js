@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       id_topic: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'topics',
@@ -17,11 +17,11 @@ module.exports = {
         }
       },
       name: {
-        type: DataTypes.STRING(15),
+        type: Sequelize.STRING(15),
         allowNull: false
       },
       url: {
-        type: DataTypes.STRING(100),
+        type: Sequelize.STRING(100),
         allowNull: true
       },
       createdAt: {
