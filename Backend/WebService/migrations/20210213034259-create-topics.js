@@ -8,26 +8,37 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id: {
-        type: Sequelize.INTEGER
-      },
       id_user: {
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id'
+        }
       },
       name: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING(45),
+        allowNull: false
       },
       teacher: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING(45),
+        allowNull: false,
+        defaultValue: ''
       },
       email: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING(45),
+        allowNull: false,
+        defaultValue: ''
       },
       phone: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING(20),
+        allowNull: false,
+        defaultValue: ''
       },
       color: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING(12),
+        allowNull: false,
+        defaultValue: ''
       },
       createdAt: {
         allowNull: false,

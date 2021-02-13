@@ -8,23 +8,33 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id: {
-        type: Sequelize.INTEGER
-      },
       id_topic: {
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'topics',
+          key: 'id'
+        }
       },
       id_link: {
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'topic_links',
+          key: 'id'
+        }
       },
       day: {
-        type: Sequelize.INTEGER
+        type: DataTypes.SMALLINT,
+        allowNull: false
       },
       start: {
-        type: Sequelize.TIME
+        type: DataTypes.TIME,
+        allowNull: false
       },
       end: {
-        type: Sequelize.TIME
+        type: DataTypes.TIME,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
