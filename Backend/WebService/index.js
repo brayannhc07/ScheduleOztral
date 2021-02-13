@@ -14,13 +14,6 @@ const sequelize = new Sequelize('schedule_oztral', 'root', '', {
 });
 
 
-// MySql Connection 
-// var connection = mysql.createConnection({
-// 	host: 'bof3omb3iziyu9mchojp-mysql.services.clever-cloud.com',
-// 	user: 'uzn6al0oo0hkm7wc',
-// 	password: 'AeDRSaUVnZavJODiPlLH',
-// 	database: 'bof3omb3iziyu9mchojp'
-// });
 
 try {
 	sequelize.authenticate();
@@ -34,19 +27,3 @@ try {
 } catch (error) {
 	console.error('Unable to connect to the database:', error);
 }
-
-// connection.connect(function (err) {
-// 	// if (err) {
-// 	// 	console.error('error connecting: ' + err.stack);
-// 	// 	return;
-// 	// }
-
-
-// 	console.log("Base de datos conectada con éxito.");
-
-// 	// Creación del servidor
-// 	app.listen(port, () => {
-// 		console.log("Servidor ejecutándose.");
-// 	});
-
-// });
