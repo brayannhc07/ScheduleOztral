@@ -19,8 +19,6 @@ CREATE TABLE IF NOT EXISTS `schedule_oztral`.`users` (
   `password` VARCHAR(256) NOT NULL,
   `first_name` VARCHAR(25) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL DEFAULT '',
-  `school_name` VARCHAR(35) NOT NULL DEFAULT '',
-  `group` VARCHAR(10) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `login_name_UNIQUE` (`login_name` ASC) )
 ENGINE = InnoDB;
@@ -31,11 +29,12 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `schedule_oztral`.`topics` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `id_user` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `teacher` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL DEFAULT '',
   `phone_number` VARCHAR(20) NOT NULL DEFAULT '',
-  `id_user` INT NOT NULL,
+  `color` VARCHAR(15) NOT NULL DEFAULT '#FFF',
   PRIMARY KEY (`id`),
   INDEX `id_user_idx` (`id_user` ASC) ,
     FOREIGN KEY (`id_user`)
@@ -69,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `schedule_oztral`.`topic_links` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `id_topic` INT NOT NULL,
   `name` VARCHAR(15) NOT NULL,
-  `url` VARCHAR(100) NOT NULL,
+  `url` VARCHAR(150) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `id_topic_idx` (`id_topic` ASC) ,
     FOREIGN KEY (`id_topic`)
@@ -139,4 +138,5 @@ CREATE TABLE IF NOT EXISTS `schedule_oztral`.`topic_fields` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
+
 
