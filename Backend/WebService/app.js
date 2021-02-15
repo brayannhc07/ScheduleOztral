@@ -1,32 +1,26 @@
 'use strict'
 
 // imports
-var express = require('express');
-var bodyParser = require('body-parser');
-
+const express = require('express');
+const bodyParser = require('body-parser');
+const rootPath = "/api";
 var app = express();
 
 // load routes
+const topicRoutes = require('./routes/topicRoutes');
+const userRoutes = require('./routes/userRoutes');
 // var usersRoutes = require("./routes");
 
 // middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Cors
-// Configurar cabeceras y cors
-// app.use((req, res, next) => {
-// 	res.header('Access-Control-Allow-Origin', '*');
-// 	res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-// 	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-// 	res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-// 	next();
-// });
-require('./routes')(app);
 // export routes
+app.use(rootPath, userRoutes);
+app.use(rootPath, topicRoutes);
 app.get('*', (req, res) => {//Home
 	res.status(200).send(
-		"<h1>Schedule Oztral</h1><p>Web Service en NodeJs y MySql.</p>");
+		{ message: "API para Schedule Oztral en Node.JS" });
 });
 // app.use('/api', usersRoutes);
 // export
