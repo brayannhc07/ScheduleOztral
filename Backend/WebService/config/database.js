@@ -6,7 +6,8 @@ const pool = MySql.createPool({
 	host: 'localhost',
 	user: 'root',
 	password: '',
-	database: 'schedule_oztral'
+	database: 'schedule_oztral',
+	multipleStatements: true
 });
 
 pool.query = Util.promisify(pool.query);
