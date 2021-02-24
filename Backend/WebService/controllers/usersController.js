@@ -14,7 +14,7 @@ function handleError(error) {
 		switch (error.errno) {
 			case 1062:
 				// Entrada duplicada
-				message = 'Ya existe ese nombre de usuario, intenta con uno distinto';
+				message = 'Ya existe ese nombre de usuario, intenta con uno distinto.';
 				break;
 			case -4078:
 				message = "No hay conexión a la base de datos.";
@@ -77,47 +77,123 @@ async function getUserFields(id_user) {
 const controller = {
 	async register(req, res) {
 		// Registrarse como usuario nuevo
-		const { login_name, password, first_name, last_name } = req.body;
-		if (!login_name || !password || !first_name || !last_name) {
+		const { login_name, password, first_name, last_name, fields } = req.body;
+		if (!login_name || !password || !first_name || !last_name || !fields) {
 			// Si alguno de los campos es nulo, devuelve error
 			return res.status(500).send({
 				success: false,
 				message: "Los datos son incompletos."
 			});
 		}
-		const query = `insert into ${tableUser} (login_name, password, first_name, last_name) values('${login_name.trim()}', '${Encrypt.SHA256(password)}', '${first_name.trim()}', '${last_name.trim()}')`;
-		try {
-			const rows = await DB.query(query);
-			console.log(rows);
-			const id = await DB.query("select LAST_INSERT_ID() as 'id'");
-			console.log(id);
-			if (rows.affectedRows != 1) {
-				return res.status(500).send({
-					success: false,
-					message: "No fue posible registrarte, inténtalo de nuevo más tarde."
-				});
-			}
-			// Se extraen los datos del usuario
-			let model = {
-				id: id[0].id,
-				login_name: login_name,
-				first_name: first_name,
-				last_name: last_name,
-				fields: await getUserFields(id),
-				token: ''
-			}
-			model.token = getToken(model);
-			return res.status(200).send({
-				success: true,
-				message: "Te registraste correctamente.",
-				data: model
+		DB.getConnection(async (err, connection) => {
+			connection.beginTransaction(async (err) => {
+				try {
+					if (err) {
+						connection.rollback(function () {
+							connection.release();
+							//Failure
+							return res.status(500).send({
+								success: false,
+								message: "No se pudo realizar la operación."
+							});
+						});
+					}
+
+					// Ahora se hacen los cambios
+					// el id se define como 0, para indicar que es un nuevo usuario
+					let query = `call save_user(0, '${login_name}', '${Encrypt.SHA256(password)}', '${first_name}', '${last_name}')`;
+					connection.query(query, async (error, results) => {
+						if (error) {
+							console.log(error);
+							return res.status(500).send({
+								success: false,
+								message: handleError(error)
+							});
+						}
+						let id = results[0][0].id; // guarda el id del usuario que se registró
+						// Sigue manejar los campos extras
+						query = '';
+
+						for (let item of fields) {
+							if (!item.name || !item.value) {
+								// el nombre y valor son obligatorios
+								return res.status(500).send({
+									success: false,
+									message: "Faltan datos, intenta de nuevo."
+								});
+							}
+							if (!item.id) {
+								// Cuando el id no venga definido, se establece como 0
+								item.id = 0;
+							}
+							query += `call save_user_field(${item.id}, '${item.name}', '${item.value}', ${id});`;
+						}
+						if (query != '') {
+							connection.query(query, async (error, results) => {
+								if (error) {
+									throw error;
+								}
+								connection.commit(async (err) => {
+									if (err) {
+										throw err;
+									}
+									connection.release();
+								});
+								// se hace la consulta
+								let exist_fields = await getUserFields(id);
+								let model = {
+									id: id,
+									login_name: login_name,
+									first_name: first_name,
+									last_name: last_name,
+									fields: exist_fields
+								}
+								model.token = getToken(model);
+
+								return res.status(200).send({
+									success: true,
+									message: "Te registraste correctamente.",
+									data: model
+								});
+							});
+						} else {
+							connection.commit(async (err) => {
+								if (err) {
+									throw err;
+								}
+								connection.release();
+							});
+							// se hace la consulta
+							let exist_fields = await getUserFields(id);
+							let model = {
+								id: id,
+								login_name: login_name,
+								first_name: first_name,
+								last_name: last_name,
+								fields: exist_fields
+							}
+							model.token = getToken(model);
+
+							return res.status(200).send({
+								success: true,
+								message: "Te registraste correctamente.",
+								data: model
+							});
+						}
+
+					});
+				} catch (error) {
+					connection.rollback(function () {
+						connection.release();
+						//Failure
+					});
+					return res.status(500).send({
+						success: false,
+						message: handleError(error)
+					});
+				}
 			});
-		} catch (error) {
-			return res.status(500).send({
-				success: false,
-				message: handleError(error)
-			});
-		}
+		});
 	},
 	async readList(req, res) {
 		// Devuelve la lista de usuarios
@@ -142,104 +218,95 @@ const controller = {
 		DB.getConnection(async (err, connection) => {
 			connection.beginTransaction(async (err) => {
 				try {
-					if (err) {                  //Transaction Error (Rollback and release connection)
+					if (err) {
 						connection.rollback(function () {
 							connection.release();
-							throw "No se pudo realizar la operación.";
+							return res.status(500).send({
+								success: false,
+								message: "No se pudo realizar la operación."
+							});
 							//Failure
 						});
 					}
-					// Primero se verifica que el usuario exista y haya ingresalo su contraseña correctamente
+					// Primero se verifica que el usuario exista y haya ingresado su contraseña correctamente
 					const result = await findUserById(id);
 					if (result == null) {
 						// El usuario no existe (id) 
-						throw "Tu usuario no está disponible o no se confirmó tu contraseña.";
-					}
-					let old_password = result.password; // Se obtiene la contraseña existente
-					if (Encrypt.SHA256(password) != old_password) {
 						// Verifica que la contraseña sea correcta
-						// throw "Tu contraseña actual no es correcta, intenta de nuevo.";
 						connection.rollback(function () {
 							connection.release();
 							//Failure
 						});
 						return res.status(500).send({
 							success: false,
-							message: "Tu contraseña no es correcta."
+							message: "Tu usuario no está disponible."
+						});
+					}
+					let old_password = result.password; // Se obtiene la contraseña existente
+					if (Encrypt.SHA256(password) != old_password) {
+						// Verifica que la contraseña sea correcta
+						connection.rollback(function () {
+							connection.release();
+							//Failure
+						});
+						return res.status(500).send({
+							success: false,
+							message: "Tu contraseña no es correcta, intenta de nuevo."
 						});
 					}
 					// Ahora se hacen los cambios
-					let query = `update ${tableUser} set login_name = '${login_name.trim()}', first_name = '${first_name.trim()}', last_name = '${last_name.trim()}' where id = ${id}`;
+					// Aquí el password no se manda porque al actualizar, la contraseña no se modifica
+					let query = `call save_user(${id}, '${login_name}', '', '${first_name}', '${last_name}')`;
 					connection.query(query, async (error, results) => {
 						if (error) { //Query Error (Rollback and release connection)
-							throw error;
+							console.log(error);
+							return res.status(500).send({
+								success: false,
+								message: handleError(error)
+							});
 						}
 						// Sigue manejar los campos extras
-						var exist_fields = await getUserFields(id);
-						console.log("Campos existentes.");
-						console.log(exist_fields);
-						console.log("Campos recibidos.");
-						console.log(fields);
+						var exist_fields = results[1]; // Obtiene los campos existentes del usuario
 						query = '';
 
-						for (const item of fields) {
+						for (let item of fields) {
 							if (!item.name || !item.value) {
 								// el nombre y valor son obligatorios
-								throw "Faltan datos, intenta de nuevo.";
+								return res.status(500).send({
+									success: false,
+									message: "Faltan datos, intenta de nuevo."
+								});
 							}
-							if (!item.id || !exist_fields.some(e => e.id === item.id)) {
-								// Si el id es nulo o su id no existe, es un field nuevo
-								console.log("Se crea");
-								query += `insert into ${tableFields}(name, value, id_user) values('${item.name}', '${item.value}', ${id});`;
-								// connection.query(query, (error, results) => {
-								// 	if (error) { //Query Error (Rollback and release connection)
-								// 		throw error;
-								// 	}
-								// });
+							if (!item.id) {
+								// Cuando el id no venga definido, se establece como 0
+								item.id = 0;
 							}
-							else if (item.id && exist_fields.some(e => e.id === item.id)) {
-								// El item existe, por lo que se debe actualizar
-								console.log("Se actualiza.");
-								query += `update ${tableFields} set name = '${item.name}', value = '${item.value}' where id = ${item.id};`;
-								// connection.query(query, (error, results) => {
-								// 	if (error) { //Query Error (Rollback and release connection)
-								// 		throw error;
-								// 	}
-								// });
-							}
-							console.log(item);
+							query += `call save_user_field(${item.id}, '${item.name}', '${item.value}', ${id});`;
 						}
 						for (const item of exist_fields) {
 							if (!fields.some(e => e.id === item.id)) {
-								console.log("Se va a eliminar");
 								// Si una de la lista existente no está en la nueva, se debe eliminar
 								query += `delete from ${tableFields} where id = ${item.id};`;
-								// connection.query(query, (error, results) => {
-								// 	if (error) { //Query Error (Rollback and release connection)
-								// 		throw error;
-								// 	}
-								// });
-								console.log(item);
 							}
 
 						}
-						console.log(query);
 						if (query != '') {
 							connection.query(query, async (error, results) => {
 								if (error) { //Query Error (Rollback and release connection)
-									throw error;
+									console.log(error);
+									return res.status(500).send({
+										success: false,
+										message: handleError(error)
+									});
 								}
 								connection.commit(async (err) => {
 									if (err) {
 										throw err;
 									}
-									console.log('Transaction Completed Successfully.');
 									connection.release();
 								});
 								// se hace la consulta
 								exist_fields = await getUserFields(id);
-								console.log("Campos existentes.");
-								console.log(exist_fields);
 								let model = {
 									id: id,
 									login_name: login_name,
@@ -259,13 +326,10 @@ const controller = {
 								if (err) {
 									throw err;
 								}
-								console.log('Transaction Completed Successfully.');
 								connection.release();
 							});
 							// se hace la consulta
 							exist_fields = await getUserFields(id);
-							console.log("Campos existentes.");
-							console.log(exist_fields);
 							let model = {
 								id: id,
 								login_name: login_name,
