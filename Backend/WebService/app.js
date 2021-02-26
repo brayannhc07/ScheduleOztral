@@ -1,24 +1,23 @@
 'use strict'
 
 // imports
-var express = require('express');
-var bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
+const auth = require('./middlewares/auth');
+const rootPath = "/api";
 
 var app = express();
-
 // load routes
-
-
+const usersRouter = require('./routers/usersRouter');
+const profileRouter = require('./routers/profileRouter');
 // middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Cors
-
 // export routes
-app.get('/', (req, res) => {//Home
-	res.status(200).send(
-		"<h1>Schedule Oztral</h1><p>Web Service en NodeJs y MySql.</p>");
-});
+app.use(rootPath, usersRouter);
+app.use(auth);// Autorización necesaria
+app.use(rootPath, profileRouter);
+
 // export
 module.exports = app;
